@@ -29,12 +29,16 @@ class Hello extends Component {
 export default Hello
 ```
 
-Now we'll see what we can do to make this more practical, and introduce the React concepts of `props` and `state`. 
+What important piece of a component is missing here? A component is a consistent format for displaying varied data. Our `<Hello />` component doesn't currently take in and display any data!
+
+In React, `state` and `props` are the two mechanisms we use to pass data to a component. 
+
+**Note**: `state` and `props` are *client side* tools that consume data from the database. If we want to change anything on the database, we're going to need to make HTTP requests to a server.
 
 ### Hello World: A Little Dynamic
 
-Our `Hello` component isn't too helpful. Let's make it more interesting.
-* Rather than simply display "Hello world", let's display a greeting to the user.
+Let's make our Hello component more interesting.
+* Rather than simply display "Hello world", let's display a greeting that addresses the user by name.
 * So the question is, how do we feed a name to our `Hello` component without hardcoding it into our render method?
 
 First, we pass in data wherever we are rendering our component, in this case in `src/index.js`:
@@ -66,8 +70,8 @@ In the above example, we replaced "world" with `{this.props.name}`.
 #### What are `.props`?
 
 Properties! Every component has `.props`
-* Properties are immutable. That is, they cannot be changed while your program is running.
-* We define properties in development and pass them in as attributes to the JSX element in our `.render` method.
+* Properties are *immutable*. That is, they cannot be changed while your program is running. Props are attached to a component when the page loads and they don't change until the component is destroyed or the page reloads.
+* We pass properties into our components as attributes of the JSX element when we call the `.render` method (in `src/index.js`).
 
 First we can pass multiple properties to our component when its rendered in `src/index.js`..
 
@@ -101,15 +105,13 @@ class Hello extends Component {
 
 
 
-## State 
+## State
 
-So we know about React properties, and how they relate to our component's data.
-* The thing is, `props` represent data that will be the same every time our component is rendered. What about data in our application that may change depending on user action?
-* That's where `state` comes in...
+So we know about React properties, and how they relate to our component's data. `props` represent data that will be the same for the whole time our component is rendered. What about data in our application that may change depending on user action? That's where `state` comes in...
 
 Values stored in a component's state are mutable attributes.
-* Like properties, we can access state values using `this.state.val`
-* Setting up and modifying state is not as straightforward as properties. It involves explicitly declaring the mutation, and then defining methods to define how to update our state....
+* Like properties, we can access a state variable called `val` using `this.state.val`
+* Setting up and modifying state is not as straightforward as properties. It involves building a constructor function for our class, and then defining methods to define how to update our state....
 
 Lets implement state in our earlier `Hello` example by incorporating a counter into our greeting.
 
@@ -141,12 +143,18 @@ class Hello extends Component {
 Ok, we set an initial state. But how do we go about changing it?
 * We need to set up some sort of trigger event to change our counter.
 
-<details>
-  <summary><strong>
-    Let's do that via a button click event. Where do you think should we initialize it?
-  </strong></summary>
+Let's use a button click event. We will need to define a function to handle the click and we will need to attach that function to a button.
 
-  > Inside the `JSX` of our return value! In Hello `render` method we can instantiate our event listeners. Notice the ultra-slick ES6 function.
+
+<details><summary>Where should we define the function?</summary>
+
+  > Inside of the class definition for our component!
+
+</details>
+
+<details><summary>How should we attach it to a button?</summary>
+
+  > Inside the `JSX` return value!  Notice the ultra-slick ES6 function.
 
 </details>
 
@@ -180,7 +188,7 @@ class Hello extends Component {
 }
 ```
 
-> Take a closer look at how this event is implemented. We use an attribute called `onClick` to define the behavior as to what happens when we click this particular button. As it's value, we're passing in an anonymous function that invokes handleClick, a function defined on this component.
+> Take a closer look at how this event is implemented. We use an attribute called `onClick` to define the behavior that happens when we click this particular button. As it's value, we're passing in an anonymous function that invokes handleClick, a function defined on this component.
 
 Whenever we run `.setState`, our component "diff's" the current DOM, and compares the Virtual DOM node with the updated state to the current DOM.
 * Only replaces the current DOM with parts that have changed.
@@ -188,7 +196,7 @@ Whenever we run `.setState`, our component "diff's" the current DOM, and compare
 
 ## Closing
 
-React, like Angular, is a powerful web framework that allows fast rendering and is a front-end tool. It works mainly in the "views" layer. It is meant to maintain readability, reusability, and performance.
+React, like Angular, is a powerful web framework that allows fast rendering and is a front-end tool. It works mainly in the "views" layer. We're able to access and manipulate data that we place inside of the `props` or `state` of the component.
 
 ### Additional Reading
 
@@ -205,4 +213,3 @@ React, like Angular, is a powerful web framework that allows fast rendering and 
 * [API/Axios](https://www.npmjs.com/package/axios)
 * [Events](https://facebook.github.io/react/tips/dom-event-listeners.html)
 * [Forms](https://facebook.github.io/react/docs/forms.html)
-
